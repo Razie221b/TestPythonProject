@@ -1,21 +1,17 @@
-from typing import Any, Generator
-
 import pytest
 import configparser
-from playwright.sync_api import Playwright, sync_playwright, Browser, Page
-from framework.playwright_manager import PlaywrightManager
-import logging
-from config.configDataProvider import is_headless
-from config.configDataProvider import browser_name
 
-logging.basicConfig(level=logging.INFO)
-log = logging.getLogger()
+from typing import Any, Generator
+from playwright.sync_api import sync_playwright, Browser, Page
+from framework.playwright_manager import PlaywrightManager
+from configs.configDataProvider import is_headless, browser_name, width, height, ignoreHttpsErrors
+from helper import log
 
 
 @pytest.fixture(scope="session")
 def get_config():
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read('configs.ini')
     return config
 
 
@@ -42,7 +38,7 @@ def browser(get_config) -> Generator[Browser, Any, None]:
     log.info("Teardown complete.")
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def page(browser: Browser) -> Generator[Page, Any, None]:
     log.info("Creating a new page for the test.")
     context = browser.new_context()
@@ -54,3 +50,15 @@ def page(browser: Browser) -> Generator[Page, Any, None]:
     log.info("Closing page and context...")
     new_page.close()
     context.close()
+
+
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args):
+    return {
+        **browser_context_args,
+        "ignore_https_errors": ignoreHttpsErrors,
+        "viewport": {
+            "width": width,
+            "height": height,
+        }
+    }
