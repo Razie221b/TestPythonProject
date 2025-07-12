@@ -27,3 +27,17 @@ Feature: LearnMode
       | abc  | 1    | User input error  |
       | null | null | User input error  |
       | 10   | 0    | Application Error |
+
+  Scenario Outline: Add one password and verify it
+    Given I am on the password Restore page
+    When I enter "<newPassword>" into the input field
+    Then I should see the result "<result>"
+
+    Examples:
+      | newPassword | result            |
+      | P@ssw0rD    | Valid Password    |
+#      | -10         | -5                |
+#      | 5           | 2.5               |
+#      | abc         | User input error  |
+#      | null        | User input error  |
+#      | 10          | Application Error |

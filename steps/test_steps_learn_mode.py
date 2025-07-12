@@ -22,8 +22,22 @@ def navigate_to_adder(page):
         page.get_by_role("button", name="skip").click()
 
 
+@given(parsers.parse('I am on the divider page'))
+def navigate_to_divider(page):
+    if page.url != "https://bugeater.web.app/app/challenge/learn/divider":
+        page.goto(baseURL)
+        page.locator('[href="/app/challenge/learn/divider"]').click()
+
+
+@given(parsers.parse('I am on the password Restore page'))
+def navigate_to_password_restore(page):
+    if page.url != "https://bugeater.web.app/app/challenge/learn/passwordRestore":
+        page.goto(baseURL)
+        page.locator('[href="/app/challenge/learn/passwordRestore"]').click()
+
+
 @when(parsers.parse('I enter "{num1}" and "{num2}" into the input fields'))
-def check_title(page, num1, num2):
+def enter_num1_and_num2(page, num1, num2):
     if is_not_null(num1):
         page.get_by_test_id("input_1").fill(num1)
     if is_not_null(num2):
@@ -33,12 +47,11 @@ def check_title(page, num1, num2):
 
 
 @then(parsers.parse('I should see the result "{result}"'))
-def verify_expected_result3(page, result):
+def verify_expected_result(page, result):
     expect(page.get_by_test_id("result")).to_have_text(f"Result: {result}")
 
 
-@given(parsers.parse('I am on the divider page'))
-def navigate_to_divider(page):
-    if page.url != "https://bugeater.web.app/app/challenge/learn/divider":
-        page.goto(baseURL)
-        page.locator('[href="/app/challenge/learn/divider"]').click()
+@when(parsers.parse('I enter "{newPassword}" into the input field'))
+def enter_new_password(page, new_password):
+    if is_not_null(new_password):
+        page.get_by_test_id("input_1").fill(new_password)
