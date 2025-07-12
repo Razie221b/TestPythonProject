@@ -2,9 +2,9 @@ import pytest
 import configparser
 
 from typing import Any, Generator
-from playwright.sync_api import sync_playwright, Browser, Page
+from playwright.sync_api import sync_playwright, Browser, Page, expect
 from framework.playwright_manager import PlaywrightManager
-from configs.configDataProvider import is_headless, browser_name, width, height, ignoreHttpsErrors
+from configs.configDataProvider import is_headless, browser_name, width, height, ignoreHttpsErrors, baseURL
 from helper import log
 
 
@@ -62,3 +62,28 @@ def browser_context_args(browser_context_args):
             "height": height,
         }
     }
+
+
+def pytest_sessionfinish(session, exitstatus):
+    log.info("pytest_sessionfinish triggered. Forcing cleanup...")
+
+    try:
+        if PlaywrightManager.page:
+            PlaywrightManager.page.close()
+            log.info("Page closed.")
+    except Exception as e:
+        log.warning(f"Error closing page: {e}")
+
+    try:
+        if PlaywrightManager.browser:
+            PlaywrightManager.browser.close()
+            log.info("Browser closed.")
+    except Exception as e:
+        log.warning(f"Error closing browser: {e}")
+
+    try:
+        if PlaywrightManager.playwright:
+            PlaywrightManager.playwright.stop()
+            log.info("Playwright stopped.")
+    except Exception as e:
+        log.warning(f"Error stopping Playwright: {e}")
