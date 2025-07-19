@@ -20,3 +20,9 @@ def fill_input_field(page, input_name, value):
 
 def click_submit_button(page):
     page.get_by_test_id("submit").click()
+
+
+def open_drop_down_and_pick_an_option(page, option_name, value):
+    page.get_by_role("button", name=f"{option_name}").click()
+    page.wait_for_timeout(500)
+    page.get_by_role("button", name=value).click()

@@ -4,7 +4,7 @@ from configs.configDataProvider import *
 from tests.steps.page_actions import *
 from helper import *
 
-scenarios('../tests/features/LearnMode.feature')
+scenarios('../tests/features/Bugeater.feature')
 
 
 @given(parsers.parse('I am on the "{page_title}" page'))
@@ -73,7 +73,8 @@ def enter_nick_name_and_first_name_and_last_name(page, nick_name, first_name, la
     click_submit_button(page)
     page.wait_for_timeout(1000)
 
-@when(parsers.parse('I enter "{nick_name}" and "{first_name}" and "{last_name}" into the input field'))
+
+@when(parsers.parse('I enter "{nick_name}" and "{first_name}" and "{last_name}" into the input fields'))
 def enter_nick_name_and_first_name_and_last_name(page, nick_name, first_name, last_name):
     if is_not_null(nick_name):
         fill_input_field(page, "input_1", nick_name)
@@ -86,6 +87,26 @@ def enter_nick_name_and_first_name_and_last_name(page, nick_name, first_name, la
     page.wait_for_timeout(1000)
 
 
+@when(parsers.parse('I pick "{value1}" and "{value2}" into the input fields'))
+def enter_nick_name_and_first_name_and_last_name(page, value1, value2):
+    if value1 != "Empty value":
+        open_drop_down_and_pick_an_option(page, "Option 1", value1)
+        fill_input_field(page, "input_1", value1)
+
+    if value2 != "Empty value":
+        open_drop_down_and_pick_an_option(page, "Option 2", value2)
+        fill_input_field(page, "input_2", value2)
+
+        click_submit_button(page)
+        page.wait_for_timeout(1000)
+
+
 @then(parsers.parse('I should see the result "{result}"'))
 def verify_expected_result(page, result):
     expect(page.get_by_test_id("result")).to_have_text(f"Result: {result}")
+
+
+@then(parsers.parse('I pick "{result}" and should see the result "{result_message}"'))
+def verify_picked_expected_result(page, result, result_message):
+    open_drop_down_and_pick_an_option(page, "Result", result)
+    expect(page.get_by_test_id("result")).to_have_text(f"Result: {result_message}")

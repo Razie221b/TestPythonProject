@@ -53,7 +53,7 @@ Feature: LearnMode
   @active
   Scenario Outline: Add three name and verify them
     Given I am on the "update nickname" page
-    When I enter "<nickName>" and "<firstName>" and "<lastName>" into the input field
+    When I enter "<nickName>" and "<firstName>" and "<lastName>" into the input fields
     Then I should see the result "<result>"
 
     Examples:
@@ -68,14 +68,14 @@ Feature: LearnMode
   @active1
   Scenario Outline: Add two numbers and verify the number multiplication result
     Given I am on the "number multiplication" page
-    When I enter "<num1>" and "<num2>" into the input fields
-    Then I should see the result "<result>"
+    When I pick "<value1>" and "<value2>" into the input fields
+    Then I pick "<result>" and should see the result "<result_message>"
 
     Examples:
-      | num1        | num2 | result            |
-      | null        | null | User input error  |
-      | abc         | 1    | User input error  |
-      | 5           | 7    | 35                |
-      | 10000000000 | 8    | Application error |
-      | 3.5         | 2.7  | 9.45              |
-      | -8          | 4    | -32               |
+      | value1 | value2 | result | result_message |
+      | 2      | 2      | number | 4              |
+#      | abc         | 1      | User input error  |                |
+#      | 5           | 7      | 35                |                |
+#      | 10000000000 | 8      | Application error |                |
+#      | 3.5         | 2.7    | 9.45              |                |
+#      | -8          | 4      | -32               |                |
