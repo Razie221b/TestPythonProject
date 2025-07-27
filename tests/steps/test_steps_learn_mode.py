@@ -13,8 +13,7 @@ def navigate_to_page(page, page_title: str):
         numberAdditionURL,
         numberDivisionURL,
         passwordRestoreURL,
-        updateProfileURL,
-        numberMultiplicationURL
+        updateProfileURL
     ]
 
     if page.url not in valid_urls:
@@ -33,9 +32,6 @@ def navigate_to_page(page, page_title: str):
 
             case "update nickname":
                 page.locator('[href="/app/challenge/learn/updateNickname"]').click()
-
-            case "number multiplication":
-                page.locator('[href="/app/challenge/generator/multiplexer"]').click()
 
             case _:
                 raise ValueError(f"Navigation logic for '{page_title}' is not defined.")
@@ -87,26 +83,6 @@ def enter_nick_name_and_first_name_and_last_name(page, nick_name, first_name, la
     page.wait_for_timeout(1000)
 
 
-@when(parsers.parse('I pick "{value1}" and "{value2}" into the input fields'))
-def enter_nick_name_and_first_name_and_last_name(page, value1, value2):
-    if value1 != "Empty value":
-        open_drop_down_and_pick_an_option(page, "Option 1", value1)
-        fill_input_field(page, "input_1", value1)
-
-    if value2 != "Empty value":
-        open_drop_down_and_pick_an_option(page, "Option 2", value2)
-        fill_input_field(page, "input_2", value2)
-
-        click_submit_button(page)
-        page.wait_for_timeout(1000)
-
-
 @then(parsers.parse('I should see the result "{result}"'))
 def verify_expected_result(page, result):
     expect(page.get_by_test_id("result")).to_have_text(f"Result: {result}")
-
-
-@then(parsers.parse('I pick "{result}" and should see the result "{result_message}"'))
-def verify_picked_expected_result(page, result, result_message):
-    open_drop_down_and_pick_an_option(page, "Result", result)
-    expect(page.get_by_test_id("result")).to_have_text(f"Result: {result_message}")

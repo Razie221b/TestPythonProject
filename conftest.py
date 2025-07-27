@@ -65,5 +65,5 @@ def browser_context_args(browser_context_args):
 
 
 def pytest_runtest_setup(item):
-    if "active1" not in item.keywords:
+    if "active" not in item.keywords:
         pytest.skip("Skipped because test does not have @active tag.")

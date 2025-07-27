@@ -64,18 +64,3 @@ Feature: LearnMode
       | null       | null                           | null                            | User input error     |
       | 123-AA     | X Æ A-12                       | X Æ A-12                        | User input error     |
       | @@@@@      | Christopher                    | Williams                        | User input error     |
-
-  @active1
-  Scenario Outline: Add two numbers and verify the number multiplication result
-    Given I am on the "number multiplication" page
-    When I pick "<value1>" and "<value2>" into the input fields
-    Then I pick "<result>" and should see the result "<result_message>"
-
-    Examples:
-      | value1 | value2 | result | result_message |
-      | 2      | 2      | number | 4              |
-#      | abc         | 1      | User input error  |                |
-#      | 5           | 7      | 35                |                |
-#      | 10000000000 | 8      | Application error |                |
-#      | 3.5         | 2.7    | 9.45              |                |
-#      | -8          | 4      | -32               |                |
